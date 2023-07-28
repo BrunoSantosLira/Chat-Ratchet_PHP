@@ -11,7 +11,7 @@
         <img src="assets/imgs/Icon ionic-ios-chatboxes.png" alt="Chat" title="Chat"/>
 
         <form id="form1">
-            <select name="salas" id="salas">
+            <select name="salas" id="room" onchange="connect()">
                 <option value="sala1">Sala 1</option>
                 <option value="sala2">Sala 2</option>
                 <option value="sala3">Sala 3</option>
@@ -27,6 +27,7 @@
         
     </section>
 
+    <script src="assets/js/bib/autobahn.js"></script>
     <script src='assets/js/script.js'></script>
 </body>
 </html>

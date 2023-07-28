@@ -1,18 +1,20 @@
 <?php
-use Ratchet\Server\IoServer;
-use Ratchet\Http\HttpServer;
-use Ratchet\WebSocket\WsServer;
-use Bruno\Socket\Chat;
-
     require 'vendor/autoload.php';
 
-    $server = IoServer::factory(
-        new HttpServer(
-            new WsServer(
-                new Chat()
+    $loop   = React\EventLoop\Factory::create();
+    $pusher = new Bruno\Socket\Pusher;
+
+    // Set up our WebSocket server for clients wanting real-time updates
+    $webSock = new React\Socket\Server('0.0.0.0:8080', $loop); // Binding to 0.0.0.0 means remotes can connect
+    $webServer = new Ratchet\Server\IoServer(
+        new Ratchet\Http\HttpServer(
+            new Ratchet\WebSocket\WsServer(
+                new Ratchet\Wamp\WampServer(
+                    $pusher
+                )
             )
         ),
-        8080
+        $webSock
     );
 
-    $server->run();
+    $loop->run();
